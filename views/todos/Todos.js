@@ -2,7 +2,7 @@ import {Text, ScrollView, View, Button} from 'react-native';
 import { styles } from "./todos.style";
 import { useState, useEffect, useRef } from "react";
 import { FlatList, ActivityIndicator, Animated } from "react-native";
-import { GestureHandlerRootView, Swipeable } from "react-native-gesture-handler";
+import { GestureHandlerRootView, Swipeable, RectButton } from "react-native-gesture-handler";
 
 const API_TODOS = 'https://jsonplaceholder.typicode.com/todos'
 
@@ -28,7 +28,7 @@ const TodoItem = ({id, title, status, handleMark}) => {
     }
     return (
         <GestureHandlerRootView>
-            <Swipeable ref={swipeableRef} renderRightActions={renderRightActions} onSwipeableRightOpen={handleSwipeableOpen}>
+            <Swipeable ref={swipeableRef} renderRightActions={renderRightActions} onSwipeableWillOpen={handleSwipeableOpen}>
                 <View style={status ? styles.itemContainerDone : styles.itemContainerProgress}>
                     <Text>{title}</Text>
                 </View>
