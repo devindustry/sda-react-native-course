@@ -20,4 +20,11 @@ export const styles = StyleSheet.create({
         marginVertical: 8,
         backgroundColor: 'green',
     },
+    swipeableText: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 2,
+        backgroundColor: 'gray',
+    }
 });
