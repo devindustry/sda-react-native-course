@@ -1,4 +1,4 @@
-import {Text, ScrollView, View, Button} from 'react-native';
+import {Text, ScrollView, View, Button, TouchableOpacity} from 'react-native';
 import { styles } from "./todos.style";
 import { useState, useEffect, useRef } from "react";
 import { FlatList, ActivityIndicator, Animated } from "react-native";
@@ -6,7 +6,7 @@ import { GestureHandlerRootView, Swipeable, RectButton } from "react-native-gest
 
 const API_TODOS = 'https://jsonplaceholder.typicode.com/todos'
 
-const TodoItem = ({id, title, status, handleMark}) => {
+const TodoItem = ({id, title, status, handleMark, handlePressDetailsButton}) => {
     const swipeableRef = useRef(null);
     const renderRightActions = (progress, dragX) => {
         const scale = dragX.interpolate({
@@ -30,7 +30,10 @@ const TodoItem = ({id, title, status, handleMark}) => {
         <GestureHandlerRootView>
             <Swipeable ref={swipeableRef} renderRightActions={renderRightActions} onSwipeableWillOpen={handleSwipeableOpen}>
                 <View style={status ? styles.itemContainerDone : styles.itemContainerProgress}>
-                    <Text>{title}</Text>
+                    <TouchableOpacity onPress={() => handlePressDetailsButton({title})}>
+                        <Text>{title}</Text>
+                    </TouchableOpacity>
+
                 </View>
             </Swipeable>
         </GestureHandlerRootView>
@@ -79,6 +82,11 @@ const Todos = ({navigation}) => {
         navigation.navigate('Counter', { initialValue: 15 });
     }
 
+    const handlePressDetailsButton = (item) => {
+        console.log('item', item);
+        navigation.navigate('TodoDetails', {title: item.title});
+    }
+
     if (isLoading) {
         return <View style={styles.containerLoader}><ActivityIndicator size="large" color="#0000ff"/></View>
     }
@@ -90,7 +98,7 @@ const Todos = ({navigation}) => {
             <Button title="Counter" onPress={handlePressButton} />
             <FlatList
                 data={todos}
-                renderItem={({ item }) => <TodoItem title={item.title} status={item.completed} handleMark={handleMarkTodo} id={item.id}/>}
+                renderItem={({ item }) => <TodoItem title={item.title} status={item.completed} handleMark={handleMarkTodo} handlePressDetailsButton={handlePressDetailsButton} id={item.id}/>}
                 keyExtractor={item => item.id}
 
             />
