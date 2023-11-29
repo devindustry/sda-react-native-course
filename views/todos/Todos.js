@@ -49,7 +49,6 @@ const Todos = ({navigation}) => {
     const [isError, setIsError ] = useState(false);
 
     const handleMarkTodo = (id) => {
-        console.log('handle mark', id);
         setTodos(
             currentTodos =>
                 currentTodos.map(todo => todo.id === id ? ({...todo, completed: !todo.completed}) : todo)
@@ -77,10 +76,6 @@ const Todos = ({navigation}) => {
         fetchTodos();
     }, []);
 
-    const handlePressButton = () => {
-        navigation.navigate('Counter', { initialValue: 15 });
-    }
-
     const handlePressDetailsButton = (item) => {
         navigation.navigate('TodoDetails', {item});
     }
@@ -93,7 +88,6 @@ const Todos = ({navigation}) => {
     }
     return (
         <View style={styles.container}>
-            <Button title="Counter" onPress={handlePressButton} />
             <FlatList
                 data={todos}
                 renderItem={({ item }) => <TodoItem item={item} handleMark={handleMarkTodo} handlePressDetailsButton={handlePressDetailsButton} />}

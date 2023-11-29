@@ -6,9 +6,8 @@ import Text from '../../components/text/Text';
 import Input from '../../components/input/Input';
 
 const INITIAL_COUNTER = 0;
-const Counter = ({ route }) => {
-    const { initialValue } = route.params;
-    const [counter, setCounter] = useState(initialValue || INITIAL_COUNTER);
+const Counter = () => {
+    const [counter, setCounter] = useState(INITIAL_COUNTER);
 
     const handleIncrementCounter = () => setCounter(counter + 1);
     const handleDecrementCounter = () => setCounter(counter - 1);
