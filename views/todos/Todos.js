@@ -1,4 +1,4 @@
-import {Text, ScrollView, View} from 'react-native';
+import {Text, ScrollView, View, Button} from 'react-native';
 import { styles } from "./todos.style";
 import { useState, useEffect, useRef } from "react";
 import { FlatList, ActivityIndicator, Animated } from "react-native";
@@ -38,7 +38,7 @@ const TodoItem = ({id, title, status, handleMark}) => {
     );
 }
 
-const Todos = () => {
+const Todos = ({navigation}) => {
     const [ todos, setTodos ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(false);
     const [isError, setIsError ] = useState(false);
@@ -75,6 +75,10 @@ const Todos = () => {
         fetchTodos();
     }, []);
 
+    const handlePressButton = () => {
+        navigation.navigate('Counter', { initialValue: 15 });
+    }
+
     if (isLoading) {
         return <View style={styles.containerLoader}><ActivityIndicator size="large" color="#0000ff"/></View>
     }
@@ -83,6 +87,7 @@ const Todos = () => {
     }
     return (
         <View style={styles.container}>
+            <Button title="Counter" onPress={handlePressButton} />
             <FlatList
                 data={todos}
                 renderItem={({ item }) => <TodoItem title={item.title} status={item.completed} handleMark={handleMarkTodo} id={item.id}/>}
