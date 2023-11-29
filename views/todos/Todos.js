@@ -6,7 +6,9 @@ import { GestureHandlerRootView, Swipeable, RectButton } from "react-native-gest
 
 const API_TODOS = 'https://jsonplaceholder.typicode.com/todos'
 
-const TodoItem = ({id, title, status, handleMark, handlePressDetailsButton}) => {
+const TodoItem = ({item, handleMark, handlePressDetailsButton}) => {
+    const {title, id, completed} = item;
+
     const swipeableRef = useRef(null);
     const renderRightActions = (progress, dragX) => {
         const scale = dragX.interpolate({
@@ -17,7 +19,7 @@ const TodoItem = ({id, title, status, handleMark, handlePressDetailsButton}) => 
 
         return (
             <Animated.View style={{transform: [{scale}], backgroundColor: 'gray'}}>
-                <Text style={styles.swipeableText}>{status ? 'PROGRESS' : 'DONE'}</Text>
+                <Text style={styles.swipeableText}>{completed ? 'PROGRESS' : 'DONE'}</Text>
             </Animated.View>
         )
     };
@@ -29,8 +31,8 @@ const TodoItem = ({id, title, status, handleMark, handlePressDetailsButton}) => 
     return (
         <GestureHandlerRootView>
             <Swipeable ref={swipeableRef} renderRightActions={renderRightActions} onSwipeableWillOpen={handleSwipeableOpen}>
-                <View style={status ? styles.itemContainerDone : styles.itemContainerProgress}>
-                    <TouchableOpacity onPress={() => handlePressDetailsButton({title})}>
+                <View style={completed ? styles.itemContainerDone : styles.itemContainerProgress}>
+                    <TouchableOpacity onPress={() => handlePressDetailsButton(item)}>
                         <Text>{title}</Text>
                     </TouchableOpacity>
 
@@ -70,9 +72,6 @@ const Todos = ({navigation}) => {
         },2000);
 
     }
-    useEffect(() => {
-        console.log(todos[0]);
-    }, [todos])
 
     useEffect(() => {
         fetchTodos();
@@ -83,8 +82,7 @@ const Todos = ({navigation}) => {
     }
 
     const handlePressDetailsButton = (item) => {
-        console.log('item', item);
-        navigation.navigate('TodoDetails', {title: item.title});
+        navigation.navigate('TodoDetails', {item});
     }
 
     if (isLoading) {
@@ -98,7 +96,7 @@ const Todos = ({navigation}) => {
             <Button title="Counter" onPress={handlePressButton} />
             <FlatList
                 data={todos}
-                renderItem={({ item }) => <TodoItem title={item.title} status={item.completed} handleMark={handleMarkTodo} handlePressDetailsButton={handlePressDetailsButton} id={item.id}/>}
+                renderItem={({ item }) => <TodoItem item={item} handleMark={handleMarkTodo} handlePressDetailsButton={handlePressDetailsButton} />}
                 keyExtractor={item => item.id}
 
             />
