@@ -5,6 +5,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         marginTop: 50,
     },
+    containerLoader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     itemContainerProgress: {
         padding: 20,
         marginVertical: 8,
