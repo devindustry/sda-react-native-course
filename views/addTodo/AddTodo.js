@@ -1,25 +1,66 @@
-import { SafeAreaView, Text, Button, TextInput } from "react-native";
+import {SafeAreaView, Text, Button, TextInput, View, ActivityIndicator} from "react-native";
 import { useTodos } from "../../context/todo.contex";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PickerSelect from 'react-native-picker-select';
+import {styles} from "../todoDetails/todoDetails.style";
+
+const API_USERS = 'https://jsonplaceholder.typicode.com/users/'
+
 
 const AddTodo = () => {
     const { addTodo } = useTodos();
     const [title, setTitle] = useState('');
+    const [users, setUsers] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [user, setUser] = useState(null);
 
-    // Zadanie 4
-    // Pobranie danych o użytkownikach: https://jsonplaceholder.typicode.com/users
-    // Dodać todo z odpowiednim uzytkownikiem
-    
+    const fetchUserData = async () => {
+        setIsError(false);
+        setIsLoading(true);
+
+        setTimeout(async () => {
+            try {
+                const response = await fetch(API_USERS);
+                const data = await response.json();
+                setUsers(data);
+            } catch (error) {
+                setIsError(true);
+            } finally {
+                setIsLoading(false);
+            }
+        },2000);
+
+    }
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
     const handleAddTodo = () => {
         addTodo({
             id: Date.now(),
             title: title,
-            userId: 1,
+            userId: user,
             completed: false
         });
         setTitle('')
     }
+
+    if (isLoading) {
+        return <View style={styles.containerLoader}><ActivityIndicator size="large" color="#0000ff"/></View>
+    }
+    if (isError) {
+        return <Text>Error: łądowanie danych</Text>
+    }
+
+    const usersPicker = [];
+    users.map(user => {
+        usersPicker.push({
+            label: user.name,
+            value: user.id
+        })
+    });
     return (
         <SafeAreaView>
             <Text>Add Todo</Text>
@@ -28,7 +69,7 @@ const AddTodo = () => {
                 onChangeText={setTitle}
                 placeholder="Nazwa zadania"
             />
-            <PickerSelect onValueChange={(value) => {console.log(value)}} items={[{label: 'User1', value: 'user1'}, {label: 'User2', value: 'user2'}]} />
+            <PickerSelect onValueChange={(value) => {setUser(value)}} items={usersPicker} />
             <Button title="Add todo" onPress={handleAddTodo} />
         </SafeAreaView>
     )

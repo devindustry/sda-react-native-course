@@ -52,8 +52,8 @@ const TodoNavigatorTab = ({navigation}) => {
 
 
 const iconsNormal = {
-    'Todos': 'ios-list',
-    'Counter': 'ios-timer'
+    'Todo': 'ios-list',
+    'AddTodo': 'ios-add'
 }
 export default function App() {
   return (
