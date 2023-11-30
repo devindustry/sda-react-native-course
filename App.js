@@ -9,6 +9,7 @@ import AddTodo from "./views/addTodo/AddTodo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
+import { TodoProvider } from "./context/todo.contex";
 
 // Zadanie 1
 // Drawer Navigation: Todos, Counter
@@ -21,15 +22,18 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-const TodoNavigatorStack = ({drawerNav}) => (
+const TodoNavigatorStack = () => (
     <Stack.Navigator>
       <Stack.Screen name="Todos List" component={Todos} />
-      <Stack.Screen name="TodoDetails" component={(props) => <TodoDetails {...props} drawerNav={drawerNav}/>} />
+      <Stack.Screen name="TodoDetails" component={TodoDetails} />
+      {/*<Stack.Screen name="TodoDetails">*/}
+      {/*    {(props) => <TodoDetails {...props} drawerNav={drawerNav}/>}*/}
+      {/*</Stack.Screen>*/}
     </Stack.Navigator>
 );
 
 const TodoNavigatorTab = ({navigation}) => {
-    const Todo
+
     return (
     <Tab.Navigator screenOptions={({ route}) => {
         return ({
@@ -41,16 +45,11 @@ const TodoNavigatorTab = ({navigation}) => {
             }
         })
     }}>
-        <Tab.Screen name="TodosList" component={(props) => <TodoNavigatorStack {...props} drawerNav={navigation}/>} />
+        <Tab.Screen name="Todo" component={TodoNavigatorStack} />
         <Tab.Screen name="AddTodo" component={AddTodo} />
     </Tab.Navigator>
 )};
 
-const CounterNavigator = () => (
-    <Stack.Navigator>
-        <Stack.Screen name="Counter" component={Counter} />
-    </Stack.Navigator>
-)
 
 const iconsNormal = {
     'Todos': 'ios-list',
@@ -59,10 +58,12 @@ const iconsNormal = {
 export default function App() {
   return (
     <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Todos">
-            <Drawer.Screen name="Todos" component={TodoNavigatorTab} />
-            <Drawer.Screen name="Counter" component={Counter} />
-        </Drawer.Navigator>
+        <TodoProvider>
+            <Drawer.Navigator initialRouteName="Counter" screenOptions={{ headerShown: false }}>
+                <Drawer.Screen name="Todos" component={TodoNavigatorTab} />
+                <Drawer.Screen name="Counter" component={Counter} />
+            </Drawer.Navigator>
+        </TodoProvider>
     </NavigationContainer>
   );
 }

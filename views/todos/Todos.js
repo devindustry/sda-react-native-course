@@ -3,11 +3,14 @@ import { styles } from "./todos.style";
 import { useState, useEffect, useRef } from "react";
 import { FlatList, ActivityIndicator, Animated } from "react-native";
 import { GestureHandlerRootView, Swipeable, RectButton } from "react-native-gesture-handler";
+import { useTodos } from "../../context/todo.contex";
 
 const API_TODOS = 'https://jsonplaceholder.typicode.com/todos'
 
-const TodoItem = ({item, handleMark, handlePressDetailsButton}) => {
+const TodoItem = ({item, handlePressDetailsButton}) => {
     const {title, id, completed} = item;
+    const { markTodo } = useTodos();
+
 
     const swipeableRef = useRef(null);
     const renderRightActions = (progress, dragX) => {
@@ -25,7 +28,7 @@ const TodoItem = ({item, handleMark, handlePressDetailsButton}) => {
     };
 
     const handleSwipeableOpen = () => {
-        handleMark(id);
+        markTodo(id);
         swipeableRef.current?.close();
     }
     return (
@@ -44,16 +47,10 @@ const TodoItem = ({item, handleMark, handlePressDetailsButton}) => {
 }
 
 const Todos = ({navigation}) => {
-    const [ todos, setTodos ] = useState([]);
+    const { todos, setTodos } = useTodos();
     const [ isLoading, setIsLoading ] = useState(false);
     const [isError, setIsError ] = useState(false);
 
-    const handleMarkTodo = (id) => {
-        setTodos(
-            currentTodos =>
-                currentTodos.map(todo => todo.id === id ? ({...todo, completed: !todo.completed}) : todo)
-        );
-    }
     const fetchTodos = async () => {
         setIsError(false);
         setIsLoading(true);
@@ -90,7 +87,7 @@ const Todos = ({navigation}) => {
         <View style={styles.container}>
             <FlatList
                 data={todos}
-                renderItem={({ item }) => <TodoItem item={item} handleMark={handleMarkTodo} handlePressDetailsButton={handlePressDetailsButton} />}
+                renderItem={({ item }) => <TodoItem item={item} handlePressDetailsButton={handlePressDetailsButton} />}
                 keyExtractor={item => item.id}
 
             />
