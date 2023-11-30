@@ -2,15 +2,19 @@ import {useEffect, useState} from "react";
 import {View, Text, ActivityIndicator} from "react-native";
 import {styles} from "./todoDetails.style";
 
-const TodoDetails = ({route}) => {
+const TodoDetails = ({route, drawerNav}) => {
     const [userData, setUserData] = useState({});
     const [ isLoading, setIsLoading ] = useState(false);
     const [isError, setIsError ] = useState(false);
     const {item } = route.params;
-    console.log('userData', item, userData);
 
     const API_USER = `https://jsonplaceholder.typicode.com/users/${item.userId}`
 
+    useEffect(() => {
+        drawerNav.setOptions({
+            drawerLockMode: 'locked-closed'
+        })
+    });
     const fetchUserData = async () => {
         setIsError(false);
         setIsLoading(true);
