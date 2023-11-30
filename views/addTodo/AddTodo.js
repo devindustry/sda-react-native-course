@@ -3,6 +3,7 @@ import { useTodos } from "../../context/todo.contex";
 import { useState, useEffect } from "react";
 import PickerSelect from 'react-native-picker-select';
 import {styles} from "../todoDetails/todoDetails.style";
+import { StyledContainer } from "./AddTodo.style";
 
 const API_USERS = 'https://jsonplaceholder.typicode.com/users/'
 
@@ -61,8 +62,12 @@ const AddTodo = () => {
             value: user.id
         })
     });
+
+    // Zadanie 5
+    // Zainstaluj styled-components oraz utworz komponenty wizualne dla inputów, buttonów oraz widoków.
+    // 
     return (
-        <SafeAreaView>
+        <StyledContainer>
             <Text>Add Todo</Text>
             <TextInput
                 value={title}
@@ -71,7 +76,7 @@ const AddTodo = () => {
             />
             <PickerSelect onValueChange={(value) => {setUser(value)}} items={usersPicker} />
             <Button title="Add todo" onPress={handleAddTodo} />
-        </SafeAreaView>
+        </StyledContainer>
     )
 
 }
