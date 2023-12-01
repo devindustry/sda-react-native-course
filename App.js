@@ -12,6 +12,7 @@ import { name as appName } from './app.json';
 import { TodoProvider } from "./context/todo.contex";
 import { ThemeProvider} from "styled-components";
 import { theme } from "./utils/style/theme";
+import { NativeBaseProvider } from "native-base";
 
 AppRegistry.registerComponent(appName, () => App);
 
@@ -54,16 +55,19 @@ const iconsNormal = {
 }
 export default function App() {
   return (
-      <ThemeProvider theme={theme}>
-          <NavigationContainer>
-              <TodoProvider>
-                  <Drawer.Navigator initialRouteName="Counter" screenOptions={{ headerShown: false }}>
-                      <Drawer.Screen name="Todos" component={TodoNavigatorTab} />
-                      <Drawer.Screen name="Counter" component={Counter} />
-                  </Drawer.Navigator>
-              </TodoProvider>
-          </NavigationContainer>
-      </ThemeProvider>
+      <NativeBaseProvider>
+          <ThemeProvider theme={theme}>
+              <NavigationContainer>
+                  <TodoProvider>
+                      <Drawer.Navigator initialRouteName="Counter" screenOptions={{ headerShown: false }}>
+                          <Drawer.Screen name="Todos" component={TodoNavigatorTab} />
+                          <Drawer.Screen name="Counter" component={Counter} />
+                      </Drawer.Navigator>
+                  </TodoProvider>
+              </NavigationContainer>
+          </ThemeProvider>
+      </NativeBaseProvider>
+
 
   );
 }

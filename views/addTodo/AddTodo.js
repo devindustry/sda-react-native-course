@@ -1,9 +1,10 @@
-import {SafeAreaView, Text, Button, TextInput, View, ActivityIndicator} from "react-native";
+import {SafeAreaView, Text, TextInput, View, ActivityIndicator} from "react-native";
 import { useTodos } from "../../context/todo.contex";
 import { useState, useEffect } from "react";
 import PickerSelect from 'react-native-picker-select';
 import {styles} from "../todoDetails/todoDetails.style";
 import { StyledContainer } from "./AddTodo.style";
+import { Button } from 'native-base'
 
 const API_USERS = 'https://jsonplaceholder.typicode.com/users/'
 
@@ -63,9 +64,8 @@ const AddTodo = () => {
         })
     });
 
-    // Zadanie 5
-    // Zainstaluj styled-components oraz utworz komponenty wizualne dla inputów, buttonów oraz widoków.
-    //
+
+    // Zadanie 2 - Ostyluj dodawanie todo - wykorzystujac NativeBase
     return (
         <StyledContainer>
             <Text>Add Todo</Text>
@@ -75,7 +75,9 @@ const AddTodo = () => {
                 placeholder="Nazwa zadania"
             />
             <PickerSelect onValueChange={(value) => {setUser(value)}} items={usersPicker} />
-            <Button title="Add todo" onPress={handleAddTodo} />
+            <Button onPress={handleAddTodo} size="lg">
+                Dodaj
+            </Button>
         </StyledContainer>
     )
 
