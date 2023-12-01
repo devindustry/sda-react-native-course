@@ -13,7 +13,7 @@ import { TodoProvider } from "./context/todo.contex";
 import { ThemeProvider} from "styled-components";
 import { theme } from "./utils/style/theme";
 import { NativeBaseProvider } from "native-base";
-
+import Career from "./views/career/Career";
 AppRegistry.registerComponent(appName, () => App);
 
 const Stack = createStackNavigator();
@@ -62,13 +62,12 @@ export default function App() {
                       <Drawer.Navigator initialRouteName="Counter" screenOptions={{ headerShown: false }}>
                           <Drawer.Screen name="Todos" component={TodoNavigatorTab} />
                           <Drawer.Screen name="Counter" component={Counter} />
+                          <Drawer.Screen name="Career" component={Career} />
                       </Drawer.Navigator>
                   </TodoProvider>
               </NavigationContainer>
           </ThemeProvider>
       </NativeBaseProvider>
-
-
   );
 }
 
