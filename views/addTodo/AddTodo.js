@@ -65,7 +65,7 @@ const AddTodo = () => {
 
     // Zadanie 5
     // Zainstaluj styled-components oraz utworz komponenty wizualne dla inputów, buttonów oraz widoków.
-    // 
+    //
     return (
         <StyledContainer>
             <Text>Add Todo</Text>

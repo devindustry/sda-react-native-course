@@ -10,11 +10,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
 import { TodoProvider } from "./context/todo.contex";
-
-// Zadanie 1
-// Drawer Navigation: Todos, Counter
-// Todos: Tab navigation: List, Add New Todo
-// List Todo: Stack Navigation - List, Details
+import { ThemeProvider} from "styled-components";
+import { theme } from "./utils/style/theme";
 
 AppRegistry.registerComponent(appName, () => App);
 
@@ -57,14 +54,17 @@ const iconsNormal = {
 }
 export default function App() {
   return (
-    <NavigationContainer>
-        <TodoProvider>
-            <Drawer.Navigator initialRouteName="Counter" screenOptions={{ headerShown: false }}>
-                <Drawer.Screen name="Todos" component={TodoNavigatorTab} />
-                <Drawer.Screen name="Counter" component={Counter} />
-            </Drawer.Navigator>
-        </TodoProvider>
-    </NavigationContainer>
+      <ThemeProvider theme={theme}>
+          <NavigationContainer>
+              <TodoProvider>
+                  <Drawer.Navigator initialRouteName="Counter" screenOptions={{ headerShown: false }}>
+                      <Drawer.Screen name="Todos" component={TodoNavigatorTab} />
+                      <Drawer.Screen name="Counter" component={Counter} />
+                  </Drawer.Navigator>
+              </TodoProvider>
+          </NavigationContainer>
+      </ThemeProvider>
+
   );
 }
 

@@ -11,6 +11,7 @@ const TodoItem = ({item, handlePressDetailsButton}) => {
     const {title, id, completed} = item;
     const { markTodo } = useTodos();
 
+    // Zadanie 1 - ostyluj liste elementów todo wykorzystując themeing styled components
 
     const swipeableRef = useRef(null);
     const renderRightActions = (progress, dragX) => {

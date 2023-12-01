@@ -1,7 +1,7 @@
 import { useState, useEffect  } from 'react';
 import { View} from "react-native";
 import { styles } from "./counter.style";
-import Button from "../../components/button/Button";
+import {StyledButton, StyledButtonText} from "../../components/button/Button";
 import Text from '../../components/text/Text';
 import Input from '../../components/input/Input';
 
@@ -25,9 +25,12 @@ const Counter = () => {
     return (
         <View style={styles.container}>
             <Text extraStyle={styles.counterText}>Licznik: {counter}</Text>
-            <Button title="Zwiększ" handlePress={handleIncrementCounter}/>
-            <Button title="Zmniejsz" handlePress={handleDecrementCounter}/>
-            <Button title="Reset" handlePress={handleResetCounter}/>
+            <StyledButton onPress={handleIncrementCounter} variant="red">
+                <StyledButtonText>
+                    Zwiększ
+                </StyledButtonText>
+            </StyledButton>
+
             <Input value={counter} onValueChange={handleInputChange} extraStyle={styles.counterInput}/>
         </View>
     );
