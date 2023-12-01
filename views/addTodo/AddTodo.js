@@ -1,10 +1,10 @@
-import {SafeAreaView, Text, TextInput, View, ActivityIndicator} from "react-native";
+import {SafeAreaView,  TextInput, View, ActivityIndicator} from "react-native";
 import { useTodos } from "../../context/todo.contex";
 import { useState, useEffect } from "react";
 import PickerSelect from 'react-native-picker-select';
 import {styles} from "../todoDetails/todoDetails.style";
 import { StyledContainer } from "./AddTodo.style";
-import { Button } from 'native-base'
+import { Button, Box, Text, Heading, VStack, Input, Select, Center, FormControl, useToast } from 'native-base'
 
 const API_USERS = 'https://jsonplaceholder.typicode.com/users/'
 
@@ -16,6 +16,7 @@ const AddTodo = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [user, setUser] = useState(null);
+    const toast = useToast();
 
     const fetchUserData = async () => {
         setIsError(false);
@@ -46,7 +47,11 @@ const AddTodo = () => {
             userId: user,
             completed: false
         });
-        setTitle('')
+        setTitle('');
+        setUser(null);
+        toast.show({
+            description: 'Dodano nowe zadanie'
+        })
     }
 
     if (isLoading) {
@@ -56,29 +61,42 @@ const AddTodo = () => {
         return <Text>Error: łądowanie danych</Text>
     }
 
-    const usersPicker = [];
-    users.map(user => {
-        usersPicker.push({
-            label: user.name,
-            value: user.id
-        })
-    });
 
-
-    // Zadanie 2 - Ostyluj dodawanie todo - wykorzystujac NativeBase
     return (
-        <StyledContainer>
-            <Text>Add Todo</Text>
-            <TextInput
-                value={title}
-                onChangeText={setTitle}
-                placeholder="Nazwa zadania"
-            />
-            <PickerSelect onValueChange={(value) => {setUser(value)}} items={usersPicker} />
-            <Button onPress={handleAddTodo} size="lg">
-                Dodaj
-            </Button>
-        </StyledContainer>
+        <Center w="100%">
+            <Box safeArea p="2" w="90%">
+                <Heading size="lg" fontWeight="600">
+                    Add todo
+                </Heading>
+                <Text>
+                    Dodaj nowe zadanie oraz przypisz odpowiednią osobe.
+                </Text>
+                <VStack space={3} mt={5}>
+                    <FormControl>
+                        <FormControl.Label>
+                            Nazwa zadania do wykonania
+                        </FormControl.Label>
+                        <Input value={title} onChangeText={setTitle}/>
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>
+                            Użytkownik przypisany do zadania
+                        </FormControl.Label>
+                        <Select selectedValue={user} onValueChange={(value) => setUser(value)} placeholder="Wybierz">
+                            {users.map(userItem => (
+                                <Select.Item label={userItem.name} value={userItem.id} key={userItem.id} />
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <Button onPress={handleAddTodo} size="lg">
+                        Dodaj
+                    </Button>
+                </VStack>
+
+
+
+            </Box>
+        </Center>
     )
 
 }
