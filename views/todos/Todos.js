@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { FlatList, ActivityIndicator, Animated } from "react-native";
 import { GestureHandlerRootView, Swipeable, RectButton } from "react-native-gesture-handler";
 import { useTodos } from "../../context/todo.contex";
+import { StyledView, StyledTodoItemView, StyledContextMenuText } from "./todos.style";
 
 const API_TODOS = 'https://jsonplaceholder.typicode.com/todos'
 
@@ -22,8 +23,10 @@ const TodoItem = ({item, handlePressDetailsButton}) => {
         });
 
         return (
-            <Animated.View style={{transform: [{scale}], backgroundColor: 'gray'}}>
-                <Text style={styles.swipeableText}>{completed ? 'PROGRESS' : 'DONE'}</Text>
+            <Animated.View style={{transform: [{scale}]}}>
+                <StyledView>
+                    <StyledContextMenuText style={styles.swipeableText}>{completed ? 'PROGRESS' : 'DONE'}</StyledContextMenuText>
+                </StyledView>
             </Animated.View>
         )
     };
@@ -35,12 +38,12 @@ const TodoItem = ({item, handlePressDetailsButton}) => {
     return (
         <GestureHandlerRootView>
             <Swipeable ref={swipeableRef} renderRightActions={renderRightActions} onSwipeableWillOpen={handleSwipeableOpen}>
-                <View style={completed ? styles.itemContainerDone : styles.itemContainerProgress}>
+                <StyledTodoItemView done={completed}>
                     <TouchableOpacity onPress={() => handlePressDetailsButton(item)}>
                         <Text>{title}</Text>
                     </TouchableOpacity>
 
-                </View>
+                </StyledTodoItemView>
             </Swipeable>
         </GestureHandlerRootView>
 
@@ -85,14 +88,14 @@ const Todos = ({navigation}) => {
         return <Text>Error: łądowanie danych</Text>
     }
     return (
-        <View style={styles.container}>
+        <StyledView>
             <FlatList
                 data={todos}
                 renderItem={({ item }) => <TodoItem item={item} handlePressDetailsButton={handlePressDetailsButton} />}
                 keyExtractor={item => item.id}
 
             />
-        </View>
+        </StyledView>
     )
 }
 
